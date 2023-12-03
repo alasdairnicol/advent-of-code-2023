@@ -1,8 +1,15 @@
 #!/usr/bin/env python
 from collections import defaultdict
+from typing import Generator
+
+Point = tuple[int, int]
 
 
-def build_numbers(lines):
+def build_numbers(lines: list[str]) -> dict[Point, int]:
+    """
+    Returns a dictionary where the keys are the starting position
+    of the number and the values are the value of the number.
+    """
     numbers = {}
     for j, line in enumerate(lines):
         digits = []
@@ -17,6 +24,7 @@ def build_numbers(lines):
             else:
                 if digits:
                     number = int("".join(digits))
+                    assert starting_point is not None
                     numbers[starting_point] = number
 
                     # reset
@@ -25,7 +33,11 @@ def build_numbers(lines):
     return numbers
 
 
-def build_symbols(lines):
+def build_symbols(lines: list[str]) -> dict[Point, str]:
+    """
+    Returns a dictionary where the keys are the starting position
+    of the symbol and the values are the symbol
+    """
     symbols = {}
     for j, line in enumerate(lines):
         for i, char in enumerate(line.strip()):
@@ -34,7 +46,11 @@ def build_symbols(lines):
     return symbols
 
 
-def nearby_points(starting_point, number):
+def nearby_points(starting_point: Point, number: int) -> Generator[Point, None, None]:
+    """
+    Yields generator of points next to all the points adjacent to the number,
+    including diagonally.
+    """
     min_x = starting_point[0] - 1
     max_x = starting_point[0] + len(str(number))
     for x in range(min_x, max_x + 1):
@@ -44,11 +60,30 @@ def nearby_points(starting_point, number):
     yield (max_x, starting_point[1])
 
 
-def do_part_1(numbers, nearby_symbols):
+def build_nearby_symbols(
+    numbers: dict[Point, int], symbols: dict[Point, str]
+) -> dict[Point, Point]:
+    """
+    Returns a dict where the keys are the starting points of the number
+    and the values are Points of adjacent symbols.
+
+    Note this approach assumes that each number is adjacent to zero or one symbol(s)
+    """
+    nearby_symbols = {}
+    for starting_point, number in numbers.items():
+        for point in nearby_points(starting_point, number):
+            if point in symbols:
+                nearby_symbols[starting_point] = point
+    return nearby_symbols
+
+
+def do_part_1(numbers: dict[Point, int], nearby_symbols) -> int:
     return sum(numbers[starting_point] for starting_point in nearby_symbols)
 
 
-def do_part_2(numbers, symbols, nearby_symbols) -> int:
+def do_part_2(
+    numbers: dict[Point, int], symbols: dict[Point, str], nearby_symbols
+) -> int:
     gears = defaultdict(list)
 
     for starting_point, symbol_point in nearby_symbols.items():
@@ -56,15 +91,6 @@ def do_part_2(numbers, symbols, nearby_symbols) -> int:
             gears[symbol_point].append(numbers[starting_point])
 
     return sum([gear[0] * gear[1] for gear in gears.values() if len(gear) == 2])
-
-
-def build_nearby_symbols(numbers, symbols):
-    nearby_symbols = {}
-    for starting_point, number in numbers.items():
-        for point in nearby_points(starting_point, number):
-            if point in symbols:
-                nearby_symbols[starting_point] = point
-    return nearby_symbols
 
 
 def main():
