@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.repository, 'alasdairnicol') # don't run in forks
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Run download script
         run: |
           python .github/workflows/aoc_download_input.py
