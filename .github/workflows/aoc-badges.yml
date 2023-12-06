@@ -10,9 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.repository, 'alasdairnicol') # don't run in forks
     steps:
-      - uses: actions/checkout@v2
-        # with:
-        #  ssh-key: ${{ secrets.SSH_KEY }}
+      - uses: actions/checkout@v4
       - uses: joblo2213/aoc-badges-action@v3.0.0
         with:
           userid: ${{ secrets.AOC_USER_ID }}
