@@ -54,7 +54,7 @@ def find_lowest_location(mappings, ranges):
 
 
 def main():
-    blocks = open("day05.txt").read().split("\n\n")
+    blocks = read_input()
 
     seed_numbers = [int(x) for x in blocks[0].split(":")[1].split()]
 
@@ -77,8 +77,8 @@ def main():
 
 
 def read_input() -> list[str]:
-    with open("day04.txt") as f:
-        return f.readlines()
+    with open("day05.txt") as f:
+        return f.read().split("\n\n")
 
 
 if __name__ == "__main__":
