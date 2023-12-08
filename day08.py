@@ -43,12 +43,22 @@ def do_part_1(node_children, instructions) -> int:
 
 
 def do_part_2(node_children, instructions) -> int:
-    cycle_lengths = {
+    node_lengths = {
         node: calc_length(node_children, node, instructions)
         for node in node_children
         if node.endswith("A") or node.endswith("Z")
     }
-    lengths = (v[0] for k, v in cycle_lengths.items() if k.endswith("A"))
+
+    # Check that if XXA -> XXZ in x steps, then XXZ -> XXZ in x steps as well
+    for start, (length, dest) in node_lengths.items():
+        if start.endswith("A"):
+            next_length, next_dest = node_lengths[dest]
+            assert length == next_length
+            assert dest == next_dest
+
+    # The assertions above means that the minimum number of steps is the LCM of
+    # the lengths of the starting nodes
+    lengths = (v[0] for k, v in node_lengths.items() if k.endswith("A"))
     return math.lcm(*lengths)
 
 
