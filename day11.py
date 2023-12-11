@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import itertools
+from typing import Iterable
 
 Point = tuple[int, int]
 
@@ -13,11 +14,11 @@ def parse_grid(lines: list[str]) -> set:
     return grid
 
 
-def get_empty_rows(lines: list[str]) -> set:
+def get_empty_rows(lines: Iterable[Iterable]) -> set[int]:
     return {j for j, line in enumerate(lines) if "#" not in line}
 
 
-def get_empty_columns(lines: list[str]) -> set:
+def get_empty_columns(lines: list[str]) -> set[int]:
     return get_empty_rows(list(zip(*lines)))
 
 
