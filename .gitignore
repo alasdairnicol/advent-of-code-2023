@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 
 *~
+# AOC input files
+day*.txt
