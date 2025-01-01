@@ -9,6 +9,8 @@ jobs:
     name: ⭐ Update badges 📅
     runs-on: ubuntu-latest
     if: startsWith(github.repository, 'alasdairnicol') # don't run in forks
+    permissions:
+      contents: write # Allow writing to the repository
     steps:
       - uses: actions/checkout@v4
       - uses: joblo2213/aoc-badges-action@v3.0.0
