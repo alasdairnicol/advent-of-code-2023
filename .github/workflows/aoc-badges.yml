@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - '**/day*.py' # only if a days source file was modified
+      - '**/day*.py' # only if a day's source file was modified
 jobs:
   build:
     name: ⭐ Update badges 📅
